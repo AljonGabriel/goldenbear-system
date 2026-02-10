@@ -4,12 +4,10 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router";
 import { Toaster } from "react-hot-toast";
-import Navbar from "./components/Navbar.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <Navbar />
       <App />
       <Toaster />
     </BrowserRouter>
