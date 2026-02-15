@@ -1,17 +1,16 @@
 import React from "react";
 import { Route, Routes } from "react-router";
-import HomePage from "./pages/HomePage";
-import WebsitePage from "./pages/WebsitePage";
-import toast from "react-hot-toast";
-import LoginForm from "./components/LoginForm";
-import TransactionsPage from "./pages/TransactionPage";
+import WebsitePage from "./pages/WebsitePage.jsx";
+import TransactionsPage from "./pages/TransactionPage.jsx";
+import BarcodesPage from "./pages/BarcodesPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/barcode" element={<BarcodesPage />} />
         <Route path="/transaction" element={<TransactionsPage />} />
         <Route path="/website" element={<WebsitePage />} />
       </Routes>

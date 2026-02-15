@@ -23,13 +23,10 @@ const Navbar = () => {
       <div className="flex-none hidden md:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
             <Link to="/transaction">Transactions</Link>
           </li>
           <li>
-            <Link to="/reports">Reports</Link>
+            <Link to="/barcode">Generate Barcodes</Link>
           </li>
         </ul>
       </div>
