@@ -2,12 +2,28 @@ import Transaction from "../models/Transaction.js";
 
 export const addTransaction = async (req, res) => {
   try {
-    const { name, date, price } = req.body;
-    const newTransaction = new Transaction({ name, date, price });
+    const { barcode, name, price, date, reason, dueDate } = req.body;
+
+    const newTransaction = new Transaction({
+      barcode,
+      name,
+      price,
+      date,
+      reason,
+      dueDate,
+    });
 
     await newTransaction.save();
-    res.status(201).send("Add Transactions Success", newTransaction);
-  } catch (error) {}
+
+    // ✅ Send JSON response with both message and transaction
+    res.status(201).json({
+      message: "Add Transaction Success",
+      transaction: newTransaction,
+    });
+  } catch (error) {
+    console.error("Error adding transaction:", error);
+    res.status(500).json({ message: "Failed to add transaction" });
+  }
 };
 
 export const getTransactions = async (req, res) => {

@@ -4,16 +4,28 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
   {
+    barcode: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
       required: true,
     },
     date: {
       type: Date,
       required: true,
     },
-    price: {
-      type: Number,
+    reason: {
+      type: String,
+      required: true,
+    },
+    dueDate: {
+      type: Date,
       required: true,
     },
   },

@@ -18,7 +18,7 @@ export default function LoginForm() {
       form.password === hardcodedUser.password
     ) {
       setError("");
-      navigate("/transactions"); // ✅ redirect to HomePage
+      navigate("/transaction"); // ✅ redirect to HomePage
     } else {
       setError("Invalid email or password");
     }
