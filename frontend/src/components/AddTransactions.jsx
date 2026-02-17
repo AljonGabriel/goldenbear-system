@@ -3,7 +3,7 @@ import axios from "axios";
 import GlobalModal from "./GlobalModal.jsx";
 import { toast } from "react-hot-toast";
 
-const AddTransactions = ({ onTransactionAdded }) => {
+const AddTransactions = ({ onTransactionAdded, transactions }) => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     barcode: "",
@@ -12,6 +12,7 @@ const AddTransactions = ({ onTransactionAdded }) => {
     date: new Date().toISOString(), // auto-set to today
     reason: "",
     dueDate: "",
+    status: "Pending",
   });
 
   // Add transaction to backend
@@ -46,6 +47,7 @@ const AddTransactions = ({ onTransactionAdded }) => {
         date: new Date().toISOString(),
         reason: "",
         dueDate: "",
+        status: "None",
       });
       setOpen(false);
       toast.success("Transaction added successfully!");

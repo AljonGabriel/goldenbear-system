@@ -2,7 +2,7 @@ import Transaction from "../models/Transaction.js";
 
 export const addTransaction = async (req, res) => {
   try {
-    const { barcode, name, price, date, reason, dueDate } = req.body;
+    const { barcode, name, price, date, reason, dueDate, status } = req.body;
 
     const newTransaction = new Transaction({
       barcode,
@@ -11,6 +11,7 @@ export const addTransaction = async (req, res) => {
       date,
       reason,
       dueDate,
+      status,
     });
 
     await newTransaction.save();

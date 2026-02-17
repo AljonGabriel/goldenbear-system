@@ -29,7 +29,9 @@ export default function LoginForm() {
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title text-center">GoldenBear Login</h2>
-
+          <label className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
           <input
             type="email"
             placeholder="Email"
@@ -37,7 +39,9 @@ export default function LoginForm() {
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             className="input input-bordered w-full"
           />
-
+          <label className="block text-sm font-medium text-gray-700">
+            Password
+          </label>
           <input
             type="password"
             placeholder="Password"

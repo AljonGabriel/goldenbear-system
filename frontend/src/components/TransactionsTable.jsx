@@ -61,12 +61,12 @@ const TransactionsTable = () => {
     <div className="flex justify-center p-6">
       <div className="w-full max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold">Transactions</h1>
-        <AddTransactions />
+        <AddTransactions transactions={transactions} />
 
         {/* Reminders Section */}
         {reminders.length > 0 && (
-          <div className="rounded-lg p-4 border">
-            <h2 className="text-lg font-bold mb-2">Upcoming Reminders</h2>
+          <div className="">
+            <h2 className="text-lg font-bold mb-2">Upcoming due</h2>
             <ul className="space-y-2">
               {reminders.map((r, index) => {
                 const today = new Date();
@@ -93,6 +93,9 @@ const TransactionsTable = () => {
                     <span className="text-sm">
                       Due: {new Date(r.dueDate).toLocaleDateString()}
                     </span>
+                    <button className="btn btn-sm bg-success border-none">
+                      Update
+                    </button>
                   </li>
                 );
               })}
@@ -101,6 +104,10 @@ const TransactionsTable = () => {
         )}
 
         {/* Search Bar */}
+        <label className="block text-sm font-medium text-gray-700">
+          Search barcode or names
+        </label>
+
         <input
           type="text"
           placeholder="Search by name or barcode..."
@@ -108,7 +115,6 @@ const TransactionsTable = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="input input-bordered w-full"
         />
-
         {/* Transactions Table */}
         <div className="overflow-x-auto bg-base-100 rounded-lg shadow-md">
           <table className="table table-zebra w-full">
@@ -120,6 +126,7 @@ const TransactionsTable = () => {
                 <th>Transaction Date</th>
                 <th>Reason</th>
                 <th>Due Date</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -139,6 +146,11 @@ const TransactionsTable = () => {
                             day: "numeric",
                           })
                         : "-"}
+                    </td>
+                    <td>
+                      <label className="block text-sm font-medium text-gray-700">
+                        {t.status || "Update soon"}
+                      </label>
                     </td>
                   </tr>
                 ))
