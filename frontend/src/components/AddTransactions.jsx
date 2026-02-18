@@ -3,7 +3,7 @@ import axios from "axios";
 import GlobalModal from "./GlobalModal.jsx";
 import { toast } from "react-hot-toast";
 
-const AddTransactions = ({ onTransactionAdded, transactions }) => {
+const AddTransactions = ({ transactions }) => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     barcode: "",
@@ -15,31 +15,43 @@ const AddTransactions = ({ onTransactionAdded, transactions }) => {
     status: "Pending",
   });
 
-  // Add transaction to backend
   const handleAdd = async () => {
+    // Clean up form values (remove ALL spaces)
+    const cleanedForm = {
+      ...form,
+      name: form.name.trim(),
+      barcode: form.barcode.replace(/\s+/g, ""), // ✅ removes all spaces
+      reason: form.reason.trim(),
+      dueDate: form.dueDate.trim(),
+      price: String(form.price).trim(),
+    };
+
+    // Check if barcode already exists
+    const barcodeExists = transactions.some(
+      (t) => t.barcode.replace(/\s+/g, "") === cleanedForm.barcode,
+    );
+
     if (
-      !form.name ||
-      !form.price ||
-      !form.barcode ||
-      !form.dueDate ||
-      !form.reason
+      !cleanedForm.name ||
+      !cleanedForm.price ||
+      !cleanedForm.barcode ||
+      !cleanedForm.dueDate ||
+      !cleanedForm.reason ||
+      barcodeExists
     ) {
-      toast.error("Please fill in all fields");
+      toast.error(
+        barcodeExists ? "Barcode already exists" : "Please fill in all fields",
+      );
       return;
     }
 
     try {
       const res = await axios.post(
         "http://localhost:5000/api/transactions/",
-        form,
+        cleanedForm,
       );
 
-      // Pass new transaction back to parent if callback provided
-      if (onTransactionAdded) {
-        onTransactionAdded(res.data);
-      }
-
-      // Reset form after success (date always resets to today)
+      // Reset form after success
       setForm({
         barcode: "",
         name: "",
@@ -140,8 +152,10 @@ const AddTransactions = ({ onTransactionAdded, transactions }) => {
               </label>
               <input
                 type="date"
+                name="dueDate"
                 value={form.dueDate}
                 onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
+                min={new Date().toISOString().split("T")[0]} // ✅ disables past dates
                 className="input input-bordered w-full"
               />
             </>

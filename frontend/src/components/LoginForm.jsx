@@ -28,7 +28,7 @@ export default function LoginForm() {
     <div className="flex items-center justify-center min-h-screen bg-base-200">
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title text-center">GoldenBear Login</h2>
+          <h2 className="card-title text-center">Goldenbear System</h2>
           <label className="block text-sm font-medium text-gray-700">
             Email
           </label>

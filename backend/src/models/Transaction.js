@@ -31,6 +31,8 @@ const transactionSchema = new mongoose.Schema(
     status: {
       type: String,
     },
+    comment: { type: String }, // ✅ new field
+    completedAt: { type: Date }, // ✅ track when completed
   },
   {
     timestamps: true,

@@ -5,18 +5,9 @@ const Navbar = () => {
     <div className="navbar bg-base-200 px-4">
       {/* Left side - Brand */}
       <div className="flex-1 flex items-center gap-2">
-        <Link to="/home" className="btn btn-ghost normal-case text-xl">
-          GoldenBear
+        <Link to="/home" className="normal-case text-xl text-yellow-500">
+          GoldenBear System
         </Link>
-        {/* External Website Button */}
-        <a
-          href="https://goldenbear.com" // ✅ replace with your actual site
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-outline btn-sm"
-        >
-          Website
-        </a>
       </div>
 
       {/* Center - Menu (hidden on mobile) */}
@@ -27,6 +18,16 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="/barcode">Generate Barcodes</Link>
+          </li>
+
+          {/* Divider before Go to Website */}
+          <li className="divider lg:divider-horizontal"></li>
+
+          <li>
+            <Link to="/website">Go to Website</Link>
+          </li>
+          <li>
+            <Link to="/product">Add Products</Link>
           </li>
         </ul>
       </div>
