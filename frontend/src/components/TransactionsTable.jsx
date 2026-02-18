@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import AddTransactions from "./AddTransactions";
+import RevenueReport from "./RevenueReport";
 
 const TransactionsTable = () => {
   const [transactions, setTransactions] = useState([]);
@@ -55,7 +56,7 @@ const TransactionsTable = () => {
 
     return (
       diff < 0 || // overdue
-      isDueSoon(t.dueDate, 3) || // due within 3 days
+      isDueSoon(t.dueDate, 5) || // due within 3 days
       target.toDateString() === today.toDateString() // due today
     );
   });
@@ -64,7 +65,16 @@ const TransactionsTable = () => {
   const handleUpdateReminder = async (reminder) => {
     try {
       // Ask user for a comment (replace with modal later)
-      const userComment = prompt("Enter a comment for this update:");
+      const userComment = prompt(
+        `Enter a comment for this update:
+       Name: ${reminder.name}
+       Barcode: ${reminder.barcode}
+       Reason: ${reminder.reason}
+       Due Date: ${new Date(reminder.dueDate).toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" })}
+
+       
+Please type your comment below:`,
+      );
 
       if (!userComment) {
         toast.error("Update cancelled — comment required");
@@ -97,72 +107,83 @@ const TransactionsTable = () => {
     }
   };
 
-  console.log(reminders);
-
   return (
     <div className="flex justify-center p-6">
       <div className="w-full max-w-7xl space-y-6">
-        <h1 className="text-2xl font-bold">Transactions</h1>
-        <AddTransactions transactions={transactions} />
+        <div className="flex gap-1">
+          <AddTransactions
+            transactions={transactions}
+            onSetTransactions={setTransactions}
+          />
+          <RevenueReport transactions={transactions} />
+        </div>
 
         {/* Reminders Section */}
         {reminders.length > 0 && (
-          <div className="">
-            <h2 className="text-lg font-bold mb-2">Upcoming Due</h2>
-            <ul className="space-y-2">
-              {reminders.map((r, index) => {
-                const today = new Date();
-                const target = new Date(r.dueDate);
-                const diff = (target - today) / (1000 * 60 * 60 * 24);
+          <div className="max-h-100 border rounded p-5 shadow">
+            <div className="mb-2">
+              <h2 className="text-lg font-bold">Upcoming Due</h2>
+              <label className="text-sm font-medium text-gray-700">
+                5 days before due date
+              </label>
+            </div>
+            <ul className="space-y-2 overflow-y-autod">
+              {[...reminders] // copy so we don't mutate original
+                .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)) // sort by soonest due date
+                .map((r, index) => {
+                  const today = new Date();
+                  const target = new Date(r.dueDate);
+                  const diff = (target - today) / (1000 * 60 * 60 * 24); // days difference
+                  const daysLeft = Math.ceil(diff); // round up to nearest whole day
 
-                // ✅ Color-coded background styles
-                let bgStyle = "bg-gray-100 text-gray-800";
-                let statusLabel = "Pending";
-                let statusColor = "badge badge-neutral";
+                  // ✅ Color-coded background styles
+                  let bgStyle = "bg-gray-100 text-gray-800";
+                  let statusLabel = "Pending";
+                  let statusColor = "badge badge-neutral";
 
-                if (diff < 0) {
-                  bgStyle = "bg-red-100 text-red-700 font-bold";
-                  statusLabel = "Overdue";
-                  statusColor = "badge badge-error";
-                } else if (target.toDateString() === today.toDateString()) {
-                  bgStyle = "bg-blue-100 text-blue-700 font-semibold";
-                  statusLabel = "Due Today";
-                  statusColor = "badge badge-info";
-                } else if (diff <= 3) {
-                  bgStyle = "bg-orange-100 text-orange-700 font-semibold";
-                  statusLabel = "Due Soon";
-                  statusColor = "badge badge-warning";
-                }
+                  if (diff < 0) {
+                    bgStyle = "bg-red-100 text-red-700 font-bold";
+                    statusLabel = "Overdue";
+                    statusColor = "badge badge-error";
+                  } else if (target.toDateString() === today.toDateString()) {
+                    bgStyle = "bg-blue-100 text-blue-700 font-semibold";
+                    statusLabel = "Due Today";
+                    statusColor = "badge badge-info";
+                  } else if (diff <= 5) {
+                    bgStyle = "bg-orange-100 text-orange-700 font-semibold";
+                    statusLabel = "Due Soon";
+                    statusColor = "badge badge-warning";
+                  }
 
-                return (
-                  <li
-                    key={r.id || r.barcode || index}
-                    className={`flex justify-between items-center p-2 rounded ${bgStyle}`}
-                  >
-                    <span>
-                      <strong>{r.name}</strong> ({r.barcode}) — {r.reason}
-                    </span>
-                    <span className="flex items-center gap-2 text-sm">
+                  return (
+                    <li
+                      key={r.id || r.barcode || index}
+                      className={`flex justify-between items-center p-1 rounded ${bgStyle}`}
+                    >
                       <span>
-                        Due: {new Date(r.dueDate).toLocaleDateString()}
+                        Barcode ID: <strong> {r.barcode}</strong> ({r.name}) —{" "}
+                        {r.reason}
                       </span>
-                      <span className={statusColor}>{statusLabel}</span>
-                      <button
-                        onClick={() => handleUpdateReminder(r)}
-                        className="btn btn-sm bg-success text-white border-none"
-                      >
-                        Update
-                      </button>
-                    </span>
-                  </li>
-                );
-              })}
+                      <span className="flex items-center gap-2 text-sm">
+                        <span>
+                          Due: {target.toLocaleDateString()}{" "}
+                          {diff >= 0 ? `(${daysLeft} days left)` : ""}
+                        </span>
+                        <span className={statusColor}>{statusLabel}</span>
+                        <button
+                          onClick={() => handleUpdateReminder(r)}
+                          className="btn btn-sm bg-success text-white border-none"
+                        >
+                          Update
+                        </button>
+                      </span>
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         )}
-
         {/* Search Bar */}
-        <label className=" text-sm font-medium ">Search barcode or names</label>
         <input
           type="text"
           placeholder="Search by name or barcode..."
@@ -170,7 +191,6 @@ const TransactionsTable = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="input input-bordered w-full"
         />
-
         {/* Transactions Table */}
         <div className="overflow-x-auto bg-base-100 rounded-lg shadow-md">
           <table className="table table-zebra w-full">
@@ -188,53 +208,61 @@ const TransactionsTable = () => {
             </thead>
             <tbody>
               {filtered.length > 0 ? (
-                filtered.map((t, index) => (
-                  <tr key={t.id || t.barcode || index}>
-                    <td>{t.barcode}</td>
-                    <td>{t.name}</td>
-                    <td>₱{t.price.toFixed(2)}</td>
-                    <td>{formatDateTime(t.date)}</td>
-                    <td>{t.reason || "-"}</td>
-
-                    <td>
-                      {t.dueDate
-                        ? new Date(t.dueDate).toLocaleDateString("en-PH", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : "-"}
-                    </td>
-                    <td>{t.comment}</td>
-                    <td>
-                      {t.status === "Completed" ? (
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-green-600">
-                            Completed
+                [...filtered] // copy array so we don’t mutate original
+                  .sort((a, b) => {
+                    // Put "Completed" last
+                    if (a.status === "Completed" && b.status !== "Completed")
+                      return 1;
+                    if (a.status !== "Completed" && b.status === "Completed")
+                      return -1;
+                    return 0; // keep other order
+                  })
+                  .map((t, index) => (
+                    <tr key={t.id || t.barcode || index}>
+                      <td>{t.barcode}</td>
+                      <td>{t.name}</td>
+                      <td>₱{t.price.toFixed(2)}</td>
+                      <td>{formatDateTime(t.date)}</td>
+                      <td>{t.reason || "-"}</td>
+                      <td>
+                        {t.dueDate
+                          ? new Date(t.dueDate).toLocaleDateString("en-PH", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })
+                          : "-"}
+                      </td>
+                      <td>{t.comment}</td>
+                      <td>
+                        {t.status === "Completed" ? (
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-green-600">
+                              Completed
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {t.completedAt
+                                ? new Date(t.completedAt).toLocaleDateString(
+                                    "en-PH",
+                                    {
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    },
+                                  )
+                                : ""}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-semibold text-red-600">
+                            {t.status || "Pending"}
                           </span>
-                          <span className="text-xs text-gray-500">
-                            {t.completedAt
-                              ? new Date(t.completedAt).toLocaleDateString(
-                                  "en-PH",
-                                  {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  },
-                                )
-                              : ""}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="font-semibold text-red-600">
-                          {t.status || "Pending"}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                        )}
+                      </td>
+                    </tr>
+                  ))
               ) : (
                 <tr>
                   <td colSpan="7" className="text-center text-gray-500">

@@ -3,7 +3,7 @@ import axios from "axios";
 import GlobalModal from "./GlobalModal.jsx";
 import { toast } from "react-hot-toast";
 
-const AddTransactions = ({ transactions }) => {
+const AddTransactions = ({ transactions, onSetTransactions }) => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     barcode: "",
@@ -51,6 +51,9 @@ const AddTransactions = ({ transactions }) => {
         cleanedForm,
       );
 
+      // ✅ Update transactions immediately
+      onSetTransactions((prev) => [res.data.transaction, ...prev]);
+
       // Reset form after success
       setForm({
         barcode: "",
@@ -70,7 +73,7 @@ const AddTransactions = ({ transactions }) => {
   };
 
   return (
-    <div>
+    <>
       <button onClick={() => setOpen(true)} className="btn btn-primary">
         Add
       </button>
@@ -79,47 +82,39 @@ const AddTransactions = ({ transactions }) => {
       <GlobalModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        title="Add Transaction"
+        title="New Transaction"
       >
         <div className="space-y-4">
           {/* Barcode */}
-          <label className="block text-sm font-medium text-gray-700">
-            Barcode
-          </label>
           <input
             type="text"
-            placeholder="Enter barcode"
+            placeholder="Scan barcode"
             value={form.barcode}
             onChange={(e) => setForm({ ...form, barcode: e.target.value })}
             className="input input-bordered w-full"
           />
 
           {/* Name */}
-          <label className="block text-sm font-medium text-gray-700">
-            Name
-          </label>
+
           <input
             type="text"
-            placeholder="Enter name"
+            placeholder="Full name"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="input input-bordered w-full"
           />
 
           {/* Price */}
-          <label className="block text-sm font-medium text-gray-700">
-            Price
-          </label>
           <input
             type="number"
-            placeholder="Enter price"
+            placeholder="Price"
             value={form.price}
             onChange={(e) => setForm({ ...form, price: e.target.value })}
             className="input input-bordered w-full"
           />
 
           {/* Transaction Date (auto-set, read-only) */}
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700">
             Transaction Date
           </label>
           <input
@@ -131,9 +126,7 @@ const AddTransactions = ({ transactions }) => {
           />
 
           {/* Reason Dropdown */}
-          <label className="block text-sm font-medium text-gray-700">
-            Reason
-          </label>
+
           <select
             value={form.reason}
             onChange={(e) => setForm({ ...form, reason: e.target.value })}
@@ -147,7 +140,7 @@ const AddTransactions = ({ transactions }) => {
           {/* Due Date (only shows if reason selected) */}
           {form.reason && (
             <>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="text-sm font-medium text-gray-700">
                 Due Date
               </label>
               <input
@@ -166,7 +159,7 @@ const AddTransactions = ({ transactions }) => {
           </button>
         </div>
       </GlobalModal>
-    </div>
+    </>
   );
 };
 

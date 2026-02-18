@@ -29,6 +29,13 @@ const Navbar = () => {
           <li>
             <Link to="/product">Add Products</Link>
           </li>
+
+          {/* Divider before Go to Website */}
+          <li className="divider lg:divider-horizontal"></li>
+
+          <li className="text-error">
+            <Link to="/product">Logout</Link>
+          </li>
         </ul>
       </div>
     </div>
