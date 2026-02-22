@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const LandingPage = () => {
   const fbLink = "https://www.facebook.com/YourJewelryPage";
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const products = [
     {
@@ -89,38 +104,44 @@ const LandingPage = () => {
   const totalPages = Math.ceil(products.length / productsPerPage);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Navbar */}
-      <nav className="bg-gradient-to-r from-yellow-400 to-yellow-600 sticky top-0 z-50">
+    <div className="min-h-screen flex flex-col bg-[#F3F4F4]">
+      <nav
+        className={`sticky top-0 z-50 transition-all ${
+          scrolled
+            ? "bg-gradient-to-r from-[#051D41] via-[#0A2C66] to-[#123B73]"
+            : "bg-gradient-to-r from-[#051D41] to-[#0A2C66]"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           {/* Logo + Brand */}
           <div className="flex items-center space-x-3">
             <div className="bg-white rounded-full p-1">
               <img
-                src="/tablogo.png" // replace with your logo file path or URL
+                src="/tablogo.png"
                 alt="GoldenBear Logo"
                 className="h-10 w-10 object-contain rounded-full"
               />
             </div>
-            <div className="flex flex-col leading-tight">
-              <h1 className="text-1xl md:text-3xl font-bold text-white">
-                Goldenbear
+            <div className="flex items-center space-x-2">
+              <h1 className="text-3xl md:text-2xl font-bold text-[#B5992B] tracking-wide">
+                GOLDENBEAR
               </h1>
-              <h1 className="text-lg md:text-xl font-serif italic text-yellow-200">
+              <span className="text-[#B5992B] text-xl">✦</span>
+              <span className="text-lg md:text-xl font-serif italic text-white">
                 JEWELRIES
-              </h1>
+              </span>
             </div>
           </div>
 
           {/* Navigation Links */}
           <ul className="flex space-x-4 md:space-x-6 text-sm md:text-base">
             <li>
-              <a href="#catalog" className="text-white hover:text-yellow-200">
+              <a href="#catalog" className="text-white hover:text-[#B5992B]">
                 Shop
               </a>
             </li>
             <li>
-              <a href="#contact" className="text-white hover:text-yellow-200">
+              <a href="#contact" className="text-white hover:text-[#B5992B]">
                 Contact
               </a>
             </li>
@@ -131,12 +152,12 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section
         id="hero"
-        className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 py-16 md:py-50"
+        className="w-full bg-gradient-to-b from-[#051D41] via-[#0A2C66] to-[#123B73] py-16 md:py-24"
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Text */}
           <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#B5992B] mb-4">
               Timeless Elegance
             </h2>
             <p className="text-base md:text-lg text-white mb-6">
@@ -146,7 +167,7 @@ const LandingPage = () => {
               href={fbLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-white text-yellow-700 px-4 md:px-6 py-2 md:py-3 rounded-lg shadow hover:bg-gray-100 transition text-sm md:text-base"
+              className="bg-[#B5992B] text-white px-4 md:px-6 py-2 md:py-3 rounded-lg shadow hover:bg-[#a38724] transition text-sm md:text-base"
             >
               Shop Now
             </a>
@@ -180,7 +201,7 @@ const LandingPage = () => {
 
       {/* Product Catalog */}
       <section id="catalog" className="max-w-7xl mx-auto px-4 md:px-6 py-12">
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6">
+        <h2 className="text-xl md:text-2xl font-semibold text-[#B5992B] mb-6 border-b border-[#B5992B] inline-block">
           Our Catalog
         </h2>
 
@@ -196,7 +217,7 @@ const LandingPage = () => {
                 className="w-full h-48 md:h-64 object-cover"
               />
               <div className="p-4">
-                <h3 className="text-base md:text-lg font-semibold">
+                <h3 className="text-base md:text-lg font-semibold text-[#051D41]">
                   {product.name}
                 </h3>
                 <p className="text-gray-600 text-sm md:text-base">
@@ -206,7 +227,7 @@ const LandingPage = () => {
                   href={fbLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 block w-full bg-yellow-600 text-white py-2 rounded hover:bg-yellow-700 text-center text-sm md:text-base"
+                  className="mt-3 block w-full bg-[#051D41] text-white py-2 rounded hover:bg-[#093679] text-center text-sm md:text-base"
                 >
                   View on Facebook
                 </a>
@@ -227,7 +248,7 @@ const LandingPage = () => {
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="px-4 py-2 border rounded disabled:opacity-50"
+            className="px-4 py-2 border rounded disabled:opacity-50 text-[#051D41]"
           >
             Prev
           </button>
@@ -236,7 +257,11 @@ const LandingPage = () => {
             <button
               key={i}
               onClick={() => setCurrentPage(i + 1)}
-              className={`px-4 py-2 border rounded ${currentPage === i + 1 ? "bg-yellow-600 text-white" : ""}`}
+              className={`px-4 py-2 border rounded ${
+                currentPage === i + 1
+                  ? "bg-[#051D41] text-white"
+                  : "text-[#051D41]"
+              }`}
             >
               {i + 1}
             </button>
@@ -245,7 +270,7 @@ const LandingPage = () => {
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="px-4 py-2 border rounded disabled:opacity-50"
+            className="px-4 py-2 border rounded disabled:opacity-50 text-[#051D41]"
           >
             Next
           </button>
@@ -256,16 +281,16 @@ const LandingPage = () => {
       <section id="contact" className="bg-white py-12">
         <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-xl md:text-2xl font-semibold text-[#B5992B] mb-4 border-b border-[#B5992B] inline-block">
               Contact Us
             </h2>
-            <p className="text-gray-600 text-sm md:text-base">
+            <p className="text-[#051D41] text-sm md:text-base">
               📍 Address: Porac, Pampanga, Philippines
             </p>
-            <p className="text-gray-600 text-sm md:text-base">
+            <p className="text-[#051D41] text-sm md:text-base">
               📞 Phone: +63 912 345 6789
             </p>
-            <p className="text-gray-600 text-sm md:text-base">
+            <p className="text-[#051D41] text-sm md:text-base">
               ✉️ Email: goldenbear@example.com
             </p>
           </div>
@@ -284,7 +309,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-6 text-center">
+      <footer className="bg-[#051D41] text-[#F3F4F4] py-6 text-center border-t border-[#B5992B]">
         <p className="text-sm md:text-base">
           © 2026 GoldenBear Jewelry. All rights reserved.
         </p>

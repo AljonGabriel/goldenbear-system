@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear login flag from localStorage
+    localStorage.removeItem("isLoggedIn");
+    // Redirect back to login page
+    navigate("/");
+  };
+
   return (
     <div className="navbar bg-base-200 px-4">
       {/* Left side - Brand */}
@@ -30,11 +39,13 @@ const Navbar = () => {
             <Link to="/product">Add Products</Link>
           </li>
 
-          {/* Divider before Go to Website */}
+          {/* Divider before Logout */}
           <li className="divider lg:divider-horizontal"></li>
 
-          <li className="text-error">
-            <Link to="/product">Logout</Link>
+          <li>
+            <button onClick={handleLogout} className="text-error font-semibold">
+              Logout
+            </button>
           </li>
         </ul>
       </div>

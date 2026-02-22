@@ -61,6 +61,10 @@ const TransactionsTable = () => {
     );
   });
 
+  const pendingCount = transactions.filter(
+    (t) => t.status !== "Completed",
+  ).length;
+
   // ✅ Handle reminder update
   const handleUpdateReminder = async (reminder) => {
     try {
@@ -124,7 +128,7 @@ Please type your comment below:`,
             <div className="mb-2">
               <h2 className="text-lg font-bold">Upcoming Due</h2>
               <label className="text-sm font-medium text-gray-700">
-                5 days before due date
+                {pendingCount} pending transactions
               </label>
             </div>
             <ul className="space-y-2 overflow-y-autod">

@@ -1,62 +1,62 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 
-export default function LoginForm() {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true",
+  );
 
-  // Hard-coded account
-  const hardcodedUser = {
-    email: "test@goldenbear.com",
-    password: "123456",
-  };
+  const handleLogin = (e) => {
+    e.preventDefault();
 
-  const handleLogin = () => {
-    if (
-      form.email === hardcodedUser.email &&
-      form.password === hardcodedUser.password
-    ) {
-      setError("");
-      navigate("/transaction"); // ✅ redirect to HomePage
+    // Hardcoded account
+    const validUser = "admin";
+    const validPass = "goldenbear123";
+
+    if (username === validUser && password === validPass) {
+      localStorage.setItem("isLoggedIn", "true");
+      setLoggedIn(true);
     } else {
-      setError("Invalid email or password");
+      alert("Invalid credentials");
     }
   };
 
+  if (loggedIn) {
+    return <Navigate to="/transaction" replace />;
+  }
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-200">
-      <div className="card w-96 bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title text-center">Goldenbear System</h2>
-          <label className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="input input-bordered w-full"
-          />
-          <label className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="input input-bordered w-full"
-          />
-
-          <button onClick={handleLogin} className="btn btn-primary w-full mt-4">
-            Login
-          </button>
-
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        </div>
-      </div>
+    <div className="flex items-center justify-center h-screen bg-[#051D41]">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-6 rounded shadow-md w-80"
+      >
+        <h2 className="text-xl font-bold mb-4 text-[#051D41]">Login</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full mb-3 p-2 border rounded"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full mb-3 p-2 border rounded"
+        />
+        <button
+          type="submit"
+          className="w-full bg-[#B5992B] text-white py-2 rounded hover:bg-[#a38724]"
+        >
+          Login
+        </button>
+      </form>
     </div>
   );
-}
+};
+
+export default LoginPage;
