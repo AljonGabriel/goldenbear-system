@@ -14,6 +14,12 @@ const AddProductForm = () => {
   const [preview, setPreview] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  const isLocal = window.location.hostname === "localhost";
+
+  const API_BASE = isLocal
+    ? "http://localhost:5000" // local backend
+    : import.meta.env.VITE_API_BASE; // backend URL from Render
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({ ...prev, [name]: value }));
@@ -41,7 +47,7 @@ const AddProductForm = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/products", formData, {
+      await axios.post(`${API_BASE}/api/products`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setSuccess(true);

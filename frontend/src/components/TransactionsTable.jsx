@@ -8,10 +8,16 @@ const TransactionsTable = () => {
   const [transactions, setTransactions] = useState([]);
   const [search, setSearch] = useState("");
 
+  const isLocal = window.location.hostname === "localhost";
+
+  const API_BASE = isLocal
+    ? "http://localhost:5000" // local backend
+    : import.meta.env.VITE_API_BASE; // backend URL from Render
+
   useEffect(() => {
     let isMounted = true;
     axios
-      .get("http://localhost:5000/api/transactions/")
+      .get(`${API_BASE}/api/transactions/`)
       .then((res) => {
         if (isMounted) setTransactions(res.data);
       })

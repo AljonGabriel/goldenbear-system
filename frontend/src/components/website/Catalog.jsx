@@ -5,10 +5,16 @@ const Catalog = ({ fbLink }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
 
+  const isLocal = window.location.hostname === "localhost";
+
+  const API_BASE = isLocal
+    ? "http://localhost:5000" // local backend
+    : import.meta.env.VITE_API_BASE; // backend URL from Render
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/products/");
+        const res = await axios.get(`${API_BASE}/api/products/`);
         // Ensure it's an array
         const data = Array.isArray(res.data) ? res.data : res.data.products;
         setProducts(data || []);

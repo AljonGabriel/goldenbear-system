@@ -9,10 +9,16 @@ const BarcodeGenerator = () => {
   const [codes, setCodes] = useState([]);
   const [transactions, setTransactions] = useState([]);
 
+  const isLocal = window.location.hostname === "localhost";
+
+  const API_BASE = isLocal
+    ? "http://localhost:5000" // local backend
+    : import.meta.env.VITE_API_BASE; // backend URL from Render
+
   // Fetch existing transactions once
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/transactions/")
+      .get(`${API_BASE}/api/transactions/`)
       .then((res) => {
         console.log(res.data); // 👀 see what field holds the barcode
         setTransactions(res.data);
