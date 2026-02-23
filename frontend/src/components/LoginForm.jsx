@@ -26,7 +26,7 @@ const LoginPage = () => {
   };
 
   if (loggedIn) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/transaction" replace />;
   }
 
   return (

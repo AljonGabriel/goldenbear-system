@@ -7,7 +7,7 @@ const Navbar = () => {
     // Clear login flag from localStorage
     localStorage.removeItem("isLoggedIn");
     // Redirect back to login page
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -33,7 +33,7 @@ const Navbar = () => {
           <li className="divider lg:divider-horizontal"></li>
 
           <li>
-            <Link to="/website">Go to Website</Link>
+            <Link to="/">Go to Website</Link>
           </li>
           <li>
             <Link to="/product">Add Products</Link>
