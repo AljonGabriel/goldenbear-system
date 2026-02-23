@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
-import transactionRoutes from "./routes/transactions.js";
-
-import catalogRoutes from "./routes/catalog.js";
+import transactions from "./routes/transactions.js";
+import products from "./routes/products.js";
+import path from "path"; // ✅ add this
 
 dotenv.config();
 
@@ -17,8 +17,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("/api/transactions", transactionRoutes);
-app.use("/api/catalog", catalogRoutes);
+app.use("/api/transactions", transactions);
+app.use("/api/products", products);
+// server.js
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.get("/", (req, res) => res.send("GoldenBear backend running"));
 
