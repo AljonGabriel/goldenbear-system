@@ -29,7 +29,7 @@ const Catalog = ({ fbLink }) => {
     : [];
   const totalPages = Math.ceil(products.length / productsPerPage);
 
-  console.log(API_BASE, products[0].imageUrl);
+  console.log(currentProducts);
   return (
     <section
       id="catalog"
