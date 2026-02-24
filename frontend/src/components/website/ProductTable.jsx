@@ -40,7 +40,7 @@ const ProductTable = () => {
       await axios.delete(`${API_BASE}/api/products/${id}`);
 
       // Update table immediately by removing the deleted product
-      onSetProducts((prev) => prev.filter((p) => p._id !== id));
+      setProducts((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       console.error(
         "Error deleting product:",

@@ -29,6 +29,7 @@ const Catalog = ({ fbLink }) => {
     : [];
   const totalPages = Math.ceil(products.length / productsPerPage);
 
+  console.log(API_BASE, products[0].imageUrl);
   return (
     <section
       id="catalog"
@@ -48,7 +49,7 @@ const Catalog = ({ fbLink }) => {
             {/* Fixed thinner image frame */}
             <div className="w-full max-w-xs mx-auto h-64 overflow-hidden flex items-center justify-center bg-gray-100">
               <img
-                src={product.imageUrl}
+                src={`${API_BASE}${product.imageUrl}`}
                 alt={product.name}
                 className="h-full object-cover"
               />

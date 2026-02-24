@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/H1n867" element={<LoginPage />} />
         <Route
           path="/barcode"
           element={

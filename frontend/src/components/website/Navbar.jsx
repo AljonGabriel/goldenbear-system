@@ -10,6 +10,14 @@ const Navbar = () => {
         <span>📍6014 Jesus St, Angeles, Pampanga</span>
         <span>GOLDENBEAR JEWELRIES</span>
         <span>📞 +63 912 345 6789</span>
+
+        {/* Invisible login link */}
+        <a
+          href="/login"
+          className="hidden" // completely hidden
+        >
+          Login
+        </a>
       </div>
 
       {/* Main Navbar */}
