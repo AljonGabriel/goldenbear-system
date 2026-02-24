@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import AddProductForm from "./AddProductForm";
+import UpdateProductBtn from "./UpdateProductBtn";
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -96,17 +97,15 @@ const ProductTable = () => {
                         <img
                           src={`${API_BASE}${p.imageUrl}`}
                           alt={p.name}
-                          className="w-16 h-16 object-cover rounded"
+                          className="h-full object-cover"
                         />
                       </td>
                       <td>{p.stock}</td>
                       <td className="space-x-2">
-                        <button
-                          onClick={() => handleEdit(p.id)}
-                          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        >
-                          Edit
-                        </button>
+                        <UpdateProductBtn
+                          product={p}
+                          onSetProducts={setProducts}
+                        />
                         <button
                           onClick={() => handleDelete(p._id)}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"

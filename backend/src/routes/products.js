@@ -1,20 +1,17 @@
-// routes/products.js
 import { Router } from "express";
 import {
   addProduct,
   getProducts,
   deleteProduct,
+  updateProduct,
 } from "../controllers/products.js";
-import upload from "../utils/upload.js";
+import upload from "../middleware/upload.js"; // Multer setup
 
 const router = Router();
 
-// Add product with image upload
-router.post("/", upload.single("image"), addProduct);
-
-// Get all products
 router.get("/", getProducts);
-
+router.post("/", upload.single("image"), addProduct);
+router.put("/:id", upload.single("image"), updateProduct); // ✅ update with optional image
 router.delete("/:id", deleteProduct);
 
 export default router;
