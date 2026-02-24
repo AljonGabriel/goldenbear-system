@@ -7,14 +7,14 @@ const Navbar = () => {
     // Clear login flag from localStorage
     localStorage.removeItem("isLoggedIn");
     // Redirect back to login page
-    navigate("/login");
+    navigate("/H1n867");
   };
 
   return (
     <div className="navbar bg-base-200 px-4">
       {/* Left side - Brand */}
       <div className="flex-1 flex items-center gap-2">
-        <Link to="/home" className="normal-case text-xl text-yellow-500">
+        <Link to="/" className="normal-case text-xl text-yellow-500">
           GoldenBear System
         </Link>
       </div>
