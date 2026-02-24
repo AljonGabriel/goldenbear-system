@@ -97,7 +97,7 @@ const ProductTable = () => {
                         <img
                           src={`${API_BASE}${p.imageUrl}`}
                           alt={p.name}
-                          className="h-full object-cover"
+                          className="h-16 w-16 object-cover rounded"
                         />
                       </td>
                       <td>{p.stock}</td>
