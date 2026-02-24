@@ -31,11 +31,16 @@ const ProductTable = () => {
   );
 
   const handleDelete = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this product?",
+    );
+    if (!confirmed) return;
+
     try {
       await axios.delete(`${API_BASE}/api/products/${id}`);
 
       // Update table immediately by removing the deleted product
-      setProducts((prev) => prev.filter((p) => p._id !== id));
+      onSetProducts((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       console.error(
         "Error deleting product:",
