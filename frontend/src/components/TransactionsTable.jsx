@@ -97,10 +97,7 @@ Please type your comment below:`,
       };
 
       // Send update to backend
-      await axios.put(
-        `http://localhost:5000/api/transactions/${reminder._id}`,
-        updated,
-      );
+      await axios.put(`${API_BASE}/api/transactions/${reminder._id}`, updated);
 
       // Update local state
       setTransactions((prev) =>
