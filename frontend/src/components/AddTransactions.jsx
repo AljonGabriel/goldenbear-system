@@ -15,6 +15,8 @@ const AddTransactions = ({ transactions, onSetTransactions }) => {
     status: "Pending",
   });
 
+  const API_BASE = import.meta.env.VITE_API_URL;
+
   const handleAdd = async () => {
     // Clean up form values (remove ALL spaces)
     const cleanedForm = {
@@ -47,7 +49,7 @@ const AddTransactions = ({ transactions, onSetTransactions }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/transactions/",
+        `${API_BASE}/api/transactions/`,
         cleanedForm,
       );
 

@@ -14,11 +14,7 @@ const AddProductForm = () => {
   const [preview, setPreview] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const isLocal = window.location.hostname === "localhost";
-
-  const API_BASE = isLocal
-    ? "http://localhost:5000" // local backend
-    : import.meta.env.VITE_API_BASE; // backend URL from Render
+  const API_BASE = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
